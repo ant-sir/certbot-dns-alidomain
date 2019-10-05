@@ -1,12 +1,13 @@
 """DNS Authenticator for Aliyun."""
 import logging
+import json
 
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.acs_exception.exceptions import ClientException
 from aliyunsdkalidns.request.v20150109.AddDomainRecordRequest import AddDomainRecordRequest
 from aliyunsdkalidns.request.v20150109.DeleteDomainRecordRequest import DeleteDomainRecordRequest
-from aliyunsdkalidns.request.v20150109.DescribeDomainRecordsRequest \
-     import DescribeDomainRecordsRequest
+from aliyunsdkalidns.request.v20150109.DescribeSubDomainRecordsRequest \
+     import DescribeSubDomainRecordsRequest
 
 import zope.interface
 
@@ -29,7 +30,7 @@ class Authenticator(dns_common.DNSAuthenticator):
 
     description = ('Obtain certificates using a DNS TXT record (if you are using Aliyun for '
                    'DNS).')
-    ttl = 120
+    ttl = 600
 
     def __init__(self, *args, **kwargs):
         super(Authenticator, self).__init__(*args, **kwargs)
@@ -90,10 +91,12 @@ class _AlidnsClient(object):
 
         request = AddDomainRecordRequest()
 
+        domain_root = '.'.join(domain.split('.')[-2:])
+        doamin_rr = record_name[:record_name.find(domain_root)-1]
         request.set_accept_format('json')
-        request.set_DomainName(domain)
+        request.set_DomainName(domain_root)
         request.set_Type("TXT")
-        request.set_RR(record_name)
+        request.set_RR(doamin_rr)
         request.set_Value(record_content)
         request.set_TTL(record_ttl)
 
@@ -143,10 +146,10 @@ class _AlidnsClient(object):
         :rtype: str
         """
 
-        request = DescribeDomainRecordsRequest()
+        request = DescribeSubDomainRecordsRequest()
         request.set_accept_format('json')
 
-        request.set_DomainName(domain)
+        request.set_SubDomain(record_name)
 
         try:
             response = self.ac.do_action_with_exception(request)
@@ -154,9 +157,9 @@ class _AlidnsClient(object):
             logger.warning('Encountered Aliyun ClientException described domain records: %s', e)
             return None
 
-        for record in response["Record"]:
-            if record["DomainName"] == domain and record["Type"] == "TXT" \
-               and record["RR"] == record_name and record["Value"] == record_content:
+        for record in json.loads(response)['DomainRecords']['Record']:
+            if record["RR"] + '.' + record["DomainName"] == record_name and record["Type"] == "TXT" \
+               and record["Value"] == record_content:
                 return record["RecordId"]
 
         return None
