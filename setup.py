@@ -19,7 +19,7 @@ setup(
     name='certbot-dns-alidomain',
     version=version,
     description="Aliyun DNS Authenticator plugin for Certbot",
-    url='https://github.com/ant-sir/certbot-dns-aliyun',
+    url='https://github.com/ant-sir/certbot-dns-alidomain',
     author="zhu.yanlei",
     author_email='zhuyanleigm@gmail.com',
     license='Apache License 2.0',
