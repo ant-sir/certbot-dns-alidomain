@@ -2,7 +2,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 
-version = '0.34.0.dev0'
+version = '0.1.0.dev0'
 
 # Remember to update local-oldest-requirements.txt when changing the minimum
 # acme/certbot version.
@@ -11,7 +11,6 @@ install_requires = [
     'certbot>=0.21.1',
     'aliyun-python-sdk-core>=2.6.0',
     'aliyun-python-sdk-alidns>=2.0.7',
-    'mock',
     'setuptools',
     'zope.interface',
 ]
