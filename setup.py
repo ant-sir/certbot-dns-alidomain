@@ -21,12 +21,12 @@ docs_extras = [
 ]
 
 setup(
-    name='certbot-dns-aliyun',
+    name='certbot-dns-aliyun-domain',
     version=version,
     description="Aliyun DNS Authenticator plugin for Certbot",
-    url='https://github.com/certbot/certbot',
-    author="Certbot Project",
-    author_email='client-dev@letsencrypt.org',
+    url='https://github.com/ant-sir/certbot-dns-aliyun',
+    author="zhu.yanlei",
+    author_email='zhuyanleigm@gmail.com',
     license='Apache License 2.0',
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     classifiers=[
