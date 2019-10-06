@@ -15,13 +15,8 @@ install_requires = [
     'zope.interface',
 ]
 
-docs_extras = [
-    'Sphinx>=1.0',  # autodoc_member_order = 'bysource', autodoc_default_flags
-    'sphinx_rtd_theme',
-]
-
 setup(
-    name='certbot-dns-aliyun-domain',
+    name='certbot-dns-alidomain',
     version=version,
     description="Aliyun DNS Authenticator plugin for Certbot",
     url='https://github.com/ant-sir/certbot-dns-aliyun',
@@ -54,13 +49,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=install_requires,
-    extras_require={
-        'docs': docs_extras,
-    },
+
     entry_points={
         'certbot.plugins': [
             'dns-aliyun = certbot_dns_aliyun.dns_aliyun:Authenticator',
         ],
     },
-    test_suite='certbot_dns_aliyun',
 )
